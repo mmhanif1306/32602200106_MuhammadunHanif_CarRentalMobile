@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import '../widgets/CarImageWidget.dart';
+import '../widgets/SpecificationWidget.dart';
+import '../controller/CarDetailController.dart';
 
 class CarDetailScreen extends StatelessWidget {
   final String carModel;
@@ -13,12 +16,12 @@ class CarDetailScreen extends StatelessWidget {
   CarDetailScreen({
     required this.carModel,
     required this.price,
-    required this.fuelType,        // Tambahkan fuelType
-    required this.engineCapacity,  // Tambahkan engineCapacity
-    required this.driveType,       // Tambahkan driveType
+    required this.fuelType,
+    required this.engineCapacity,
+    required this.driveType,
     required this.imageUrl,
-    required this.mpg,             // Tambahkan mpg
-    required this.driverName,      // Tambahkan driverName
+    required this.mpg,
+    required this.driverName,
   });
 
   @override
@@ -62,7 +65,7 @@ class CarDetailScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16),
-                    _buildCarImage(),
+                    CarImageWidget(imageUrl: imageUrl),
                     SizedBox(height: 16),
                     _buildThumbnailRow(),
                   ],
@@ -71,46 +74,9 @@ class CarDetailScreen extends StatelessWidget {
               SizedBox(height: 16),
 
               // Driver Info
-              Row(
-                children: [
-                  CircleAvatar(
-                    radius: 24,
-                    backgroundImage: NetworkImage(
-                      'https://example.com/driver.jpg', // Replace with actual driver image
-                    ),
-                  ),
-                  SizedBox(width: 16),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        driverName,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 16,
-                        ),
-                      ),
-                      Text(
-                        'Driver',
-                        style: TextStyle(
-                          color: Colors.white54,
-                          fontSize: 14,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Spacer(),
-                  Icon(
-                    Icons.message,
-                    color: Colors.greenAccent,
-                    size: 28,
-                  ),
-                ],
-              ),
-              SizedBox(height: 16),
+              _buildDriverInfo(driverName),
 
-              // Specification Section
+              SizedBox(height: 16),
               Text(
                 'Specification',
                 style: TextStyle(
@@ -120,60 +86,20 @@ class CarDetailScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 16),
-              _buildSpecifications(),
+              SpecificationWidget(
+                specifications: {
+                  'Fuel Type': fuelType,
+                  'Engine': engineCapacity,
+                  'Drive': driveType,
+                  'Mileage': '$mpg MPG',
+                },
+              ),
+              SizedBox(height: 24),
 
               // Price and Booking Button
-              SizedBox(height: 24),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    price,
-                    style: TextStyle(
-                      color: Colors.yellowAccent,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
-                      // Booking Action
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.yellowAccent,
-                      foregroundColor: Colors.black,
-                      padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30),
-                      ),
-                    ),
-                    child: Text(
-                      'Book Now',
-                      style: TextStyle(fontSize: 18),
-                    ),
-                  ),
-                ],
-              ),
+              _buildPriceAndButton(context),
             ],
           ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildCarImage() {
-    return Container(
-      height: 200,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.grey[850],
-        borderRadius: BorderRadius.circular(20),
-      ),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
-        child: Image.network(
-          imageUrl,
-          fit: BoxFit.cover,
         ),
       ),
     );
@@ -211,44 +137,76 @@ class CarDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSpecifications() {
+  Widget _buildDriverInfo(String driverName) {
     return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        _buildSpecItem('Gasoline', 'Fuel Type', Icons.local_gas_station),
-        _buildSpecItem(engineCapacity, 'Engine', Icons.speed),
-        _buildSpecItem(driveType, 'Drive', Icons.settings),
-        _buildSpecItem('$mpg MPG', 'Mileage', Icons.directions_car),
+        CircleAvatar(
+          radius: 24,
+          backgroundImage: NetworkImage(
+            'https://example.com/driver.jpg', // Replace with actual driver image
+          ),
+        ),
+        SizedBox(width: 16),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              driverName,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 16,
+              ),
+            ),
+            Text(
+              'Driver',
+              style: TextStyle(
+                color: Colors.white54,
+                fontSize: 14,
+              ),
+            ),
+          ],
+        ),
+        Spacer(),
+        Icon(
+          Icons.message,
+          color: Colors.greenAccent,
+          size: 28,
+        ),
       ],
     );
   }
 
-  Widget _buildSpecItem(String value, String label, IconData icon) {
-    return Container(
-      padding: EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.grey[850],
-        borderRadius: BorderRadius.circular(12),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: Colors.yellowAccent, size: 28),
-          SizedBox(height: 8),
-          Text(
-            value,
-            style: TextStyle(
-              color: Colors.white,
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+  Widget _buildPriceAndButton(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          price,
+          style: TextStyle(
+            color: Colors.yellowAccent,
+            fontSize: 28,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        ElevatedButton(
+          onPressed: () {
+            // Booking Action
+          },
+          style: ElevatedButton.styleFrom(
+            backgroundColor: Colors.yellowAccent,
+            foregroundColor: Colors.black,
+            padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(30),
             ),
           ),
-          SizedBox(height: 4),
-          Text(
-            label,
-            style: TextStyle(color: Colors.white54, fontSize: 12),
+          child: Text(
+            'Book Now',
+            style: TextStyle(fontSize: 18),
           ),
-        ],
-      ),
+        ),
+      ],
     );
   }
 }

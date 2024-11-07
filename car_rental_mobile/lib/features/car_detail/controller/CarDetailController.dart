@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
 class CarDetailController {
-  void rentCar(BuildContext context, String carModel) {
+  // Implement booking logic or other business logic here
+  void bookCar(BuildContext context) {
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('$carModel rented successfully!')),
+      SnackBar(content: Text('Booking Successful')),
     );
-    Navigator.pop(context);
   }
 }

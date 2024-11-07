@@ -8,14 +8,18 @@ class CarImageWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: double.infinity,
       height: 200,
+      width: double.infinity,
       decoration: BoxDecoration(
-        image: DecorationImage(
-          image: NetworkImage(imageUrl),
+        color: Colors.grey[850],
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Image.network(
+          imageUrl,
           fit: BoxFit.cover,
         ),
-        borderRadius: BorderRadius.circular(20),
       ),
     );
   }
