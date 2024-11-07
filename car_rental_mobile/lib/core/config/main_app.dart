@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import '../constants/color.dart';
 import '../../features/onboarding/screen/WelcomeScreen.dart';
 import '../../features/home/screen/HomeScreen.dart';
-import '../../features/car_detail/screen/CarDetailScreen.dart';
 
 class MyApp extends StatelessWidget {
   @override

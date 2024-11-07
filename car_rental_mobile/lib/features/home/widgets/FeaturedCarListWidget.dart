@@ -19,11 +19,15 @@ class FeaturedCarListWidget extends StatelessWidget {
                 context,
                 MaterialPageRoute(
                   builder: (context) => CarDetailScreen(
-                    carModel: car.modelName,
-                    price: car.pricePerDay,
-                    details: '${car.fuelType} • ${car.engineCapacity} • ${car.driveType}',
-                    imageUrl: car.imageUrl, // Menggunakan imageUrlList untuk featured cars
-                  ),
+                  carModel: car.modelName,
+                  price: car.pricePerDay,
+                  fuelType: car.fuelType,           // Dikirim sebagai parameter terpisah
+                  engineCapacity: car.engineCapacity,
+                  driveType: car.driveType,
+                  imageUrl: car.imageUrl,
+                  mpg: '25',                        // Contoh data
+                  driverName: 'Mr. Robert',         // Contoh data
+                ),
                 ),
               );
             },

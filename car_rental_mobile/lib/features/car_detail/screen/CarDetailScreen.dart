@@ -3,22 +3,22 @@ import 'package:flutter/material.dart';
 class CarDetailScreen extends StatelessWidget {
   final String carModel;
   final String price;
-  final String imageUrl;
   final String fuelType;
   final String engineCapacity;
   final String driveType;
-  final String mpg; // Miles Per Gallon (Example Data)
-  final String driverName; // Example: Mr. Robert
+  final String imageUrl;
+  final String mpg;
+  final String driverName;
 
   CarDetailScreen({
     required this.carModel,
     required this.price,
+    required this.fuelType,        // Tambahkan fuelType
+    required this.engineCapacity,  // Tambahkan engineCapacity
+    required this.driveType,       // Tambahkan driveType
     required this.imageUrl,
-    required this.fuelType,
-    required this.engineCapacity,
-    required this.driveType,
-    required this.mpg,
-    required this.driverName,
+    required this.mpg,             // Tambahkan mpg
+    required this.driverName,      // Tambahkan driverName
   });
 
   @override
@@ -62,31 +62,9 @@ class CarDetailScreen extends StatelessWidget {
                       ),
                     ),
                     SizedBox(height: 16),
-                    Container(
-                      height: 200,
-                      width: double.infinity,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[850],
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(20),
-                        child: Image.network(
-                          imageUrl,
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
+                    _buildCarImage(),
                     SizedBox(height: 16),
-                    // Thumbnail Images (Optional)
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        _buildThumbnail(imageUrl),
-                        _buildThumbnail(imageUrl),
-                        _buildThumbnail(imageUrl),
-                      ],
-                    ),
+                    _buildThumbnailRow(),
                   ],
                 ),
               ),
@@ -98,7 +76,7 @@ class CarDetailScreen extends StatelessWidget {
                   CircleAvatar(
                     radius: 24,
                     backgroundImage: NetworkImage(
-                      'https://your-driver-image-url.com', // Example Image URL
+                      'https://example.com/driver.jpg', // Replace with actual driver image
                     ),
                   ),
                   SizedBox(width: 16),
@@ -142,24 +120,10 @@ class CarDetailScreen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildSpecification('Gasoline', 'Fuel Type', Icons.local_gas_station),
-                  _buildSpecification(engineCapacity, 'Engine', Icons.speed),
-                ],
-              ),
-              SizedBox(height: 16),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  _buildSpecification(driveType, 'Drive', Icons.settings),
-                  _buildSpecification('$mpg MPG', 'Mileage', Icons.directions_car),
-                ],
-              ),
-              SizedBox(height: 24),
+              _buildSpecifications(),
 
               // Price and Booking Button
+              SizedBox(height: 24),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -173,7 +137,7 @@ class CarDetailScreen extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // Handle Booking
+                      // Booking Action
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.yellowAccent,
@@ -194,6 +158,35 @@ class CarDetailScreen extends StatelessWidget {
           ),
         ),
       ),
+    );
+  }
+
+  Widget _buildCarImage() {
+    return Container(
+      height: 200,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.grey[850],
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: ClipRRect(
+        borderRadius: BorderRadius.circular(20),
+        child: Image.network(
+          imageUrl,
+          fit: BoxFit.cover,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildThumbnailRow() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        _buildThumbnail(imageUrl),
+        _buildThumbnail(imageUrl),
+        _buildThumbnail(imageUrl),
+      ],
     );
   }
 
@@ -218,7 +211,19 @@ class CarDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSpecification(String value, String label, IconData icon) {
+  Widget _buildSpecifications() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        _buildSpecItem('Gasoline', 'Fuel Type', Icons.local_gas_station),
+        _buildSpecItem(engineCapacity, 'Engine', Icons.speed),
+        _buildSpecItem(driveType, 'Drive', Icons.settings),
+        _buildSpecItem('$mpg MPG', 'Mileage', Icons.directions_car),
+      ],
+    );
+  }
+
+  Widget _buildSpecItem(String value, String label, IconData icon) {
     return Container(
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
@@ -231,7 +236,11 @@ class CarDetailScreen extends StatelessWidget {
           SizedBox(height: 8),
           Text(
             value,
-            style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           SizedBox(height: 4),
           Text(
